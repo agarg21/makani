@@ -91,6 +91,7 @@ dev = [
 test = [
     "pytest>=6.0.0",
     "pytest-cov",
+    "pytest-xdist",
     "parameterized",
     "properscoring",
     "xarray>=2025.1.0",

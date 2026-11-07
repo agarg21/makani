@@ -78,8 +78,11 @@ jobs:
       env:
         # a distinct name, so the coverage job can combine it with the distributed suite's
         COVERAGE_FILE: .coverage.serial
+        # one torch thread per xdist worker, so the workers share the runner's vCPUs without oversubscribing them
+        OMP_NUM_THREADS: "1"
       run: |
-        python -m pytest -ra ./tests --ignore=tests/distributed --cov=makani --cov-report=term-missing
+        # one worker per vCPU; loadscope keeps each test class (and its setUpClass data) on one worker
+        python -m pytest -ra -n auto --dist loadscope ./tests --ignore=tests/distributed --cov=makani --cov-report=term-missing
 
     - uses: actions/upload-artifact@v4
       with:
